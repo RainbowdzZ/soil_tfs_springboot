@@ -150,6 +150,10 @@ public class WxCouponServiceImpl extends ServiceImpl<WxCouponMapper, WxCoupon> i
         wxCouponMapper.updateWxCoupon(updateCoupon);
     }
 
+    /**
+     * 暂停发放优惠劵
+     * @param id
+     */
     @Override
     public void stopIssue(Long id) {
         WxCoupon wxCoupon = wxCouponMapper.selectWxCouponById(id);

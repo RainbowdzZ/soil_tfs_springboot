@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.wx.mapper.TfsHomeMapper">
+
+    <!--查询首页数据的sql -->
+    <!-- 1、查询今日已支付订单数 -->
+    <select id="selectCountTodayOrders" resultType="int">
+        select count(*)
+        from tfs_order
+        where DATE(order_time) = CURDATE()
+          AND (order_status BETWEEN 1 AND 4 OR order_status = 6);
+    </select>
+
+    <!-- 2、查询某状态的订单数 -->
+    <select id="selectCountStatusOrders" resultType="int">
+        select count(*)
+        from tfs_order
+        where order_status = #{type};
+    </select>
+
+    <!-- 3、查询用户数量 -->
+    <select id="selectCountUsers" resultType="int">
+        select count(*)
+        from wx_user;
+    </select>
+
+    <!-- 4、查询用户反馈数 -->
+    <select id="selectCountFeedback" resultType="int">
+                select count(*) from tfs_feedback;
+    </select>
+
+    <!-- 5、查询本周已支付订单 -->
+    <select id="selectCountWeekOrders" parameterType="java.util.List" resultType="com.ruoyi.wx.domain.dto.HomeDto$DateCount">
+        SELECT DATE(date_table.date)                    AS orderDate,
+               COALESCE(COUNT(tfs_order.order_time), 0) AS orderCount
+        FROM (SELECT current_date - INTERVAL (WEEKDAY(current_date) + 1) DAY + INTERVAL day DAY AS date
+              FROM (SELECT 0 AS day
+                    UNION
+                    SELECT 1
+                    UNION
+                    SELECT 2
+                    UNION
+                    SELECT 3
+                    UNION
+                    SELECT 4
+                    UNION
+                    SELECT 5
+                    UNION
+                    SELECT 6) days) AS date_table
+                 LEFT JOIN
+             tfs_order ON DATE(date_table.date) = DATE(tfs_order.order_time)
+                 AND (order_status BETWEEN 1 AND 4 OR order_status = 6)
+                 AND YEARWEEK(order_time, 2) = YEARWEEK(CURDATE(), 2)
+        GROUP BY DATE(date_table.date)
+        ORDER BY DATE(date_table.date);
+    </select>
+
+    <!-- 6、查询本月已支付订单 -->
+    <select id="selectCountMonthOrders" resultType="com.ruoyi.wx.domain.dto.HomeDto$DateCount">
+        SELECT
+            DATE(date_table.date) AS orderDate,
+            COALESCE(COUNT(tfs_order.order_time), 0) AS orderCount
+        FROM
+            (
+                SELECT CURDATE() - INTERVAL (DAY(CURDATE()) - 1) DAY + INTERVAL day DAY AS date
+                FROM (SELECT 0 AS day UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10 UNION SELECT 11 UNION SELECT 12 UNION SELECT 13 UNION SELECT 14 UNION SELECT 15 UNION SELECT 16 UNION SELECT 17 UNION SELECT 18 UNION SELECT 19 UNION SELECT 20 UNION SELECT 21 UNION SELECT 22 UNION SELECT 23 UNION SELECT 24 UNION SELECT 25 UNION SELECT 26 UNION SELECT 27 UNION SELECT 28 UNION SELECT 29 UNION SELECT 30 UNION SELECT 31) days
+                WHERE MONTH(CURDATE() - INTERVAL (DAY(CURDATE()) - 1) DAY + INTERVAL day DAY) = MONTH(CURDATE())
+            ) AS date_table
+                LEFT JOIN
+            tfs_order ON DATE(date_table.date) = DATE(tfs_order.order_time)
+                AND (order_status BETWEEN 1 AND 4 OR order_status = 6)
+                AND YEAR(tfs_order.order_time) = YEAR(CURDATE())
+                AND MONTH(tfs_order.order_time) = MONTH(CURDATE())
+        GROUP BY
+            DATE(date_table.date)
+        ORDER BY
+            DATE(date_table.date);
+    </select>
+
+    <!-- 7、查询全年已支付订单 -->
+    <select id="selectCountYearOrders" resultType="com.ruoyi.wx.domain.dto.HomeDto$DateCount">
+        SELECT
+            CONCAT(CAST(months.month AS UNSIGNED), '月') AS orderDate,
+            COUNT(tfs_order.order_time) AS orderCount
+        FROM
+            (
+                SELECT '1' AS month UNION SELECT '2' UNION SELECT '3' UNION SELECT '4'
+                UNION SELECT '5' UNION SELECT '6' UNION SELECT '7' UNION SELECT '8'
+                UNION SELECT '9' UNION SELECT '10' UNION SELECT '11' UNION SELECT '12'
+            ) AS months
+                LEFT JOIN
+            tfs_order ON months.month = LPAD(MONTH(tfs_order.order_time), 2, '0')
+                AND (tfs_order.order_status BETWEEN 1 AND 4 OR tfs_order.order_status = 6)
+        GROUP BY
+            months.month
+        ORDER BY
+            CAST(months.month AS UNSIGNED);
+
+    </select>
+
+
+</mapper>
