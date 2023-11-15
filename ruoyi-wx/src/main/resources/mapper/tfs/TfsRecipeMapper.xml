@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.wx.mapper.TfsRecipeMapper">
+    
+    <resultMap type="TfsRecipe" id="TfsRecipeResult">
+        <result property="id"    column="id"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="fertilizationAdvice"    column="fertilization_advice"    />
+        <result property="plantingAdvice"    column="planting_advice"    />
+        <result property="summary"    column="summary"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+<!--    引入订单结果表-->
+    <resultMap type="TfsOrder" id="TfsOrderResult">
+        <result property="id"    column="id"    />
+        <result property="wxUserId"    column="wx_user_id"    />
+        <result property="soilNumber"    column="soil_number"    />
+        <result property="orderTime"    column="order_time"    />
+        <result property="orderStatus"    column="order_status"    />
+        <result property="userCouponId" column="user_coupon_id" />
+        <result property="soilUrl" column="soil_url" />
+        <result property="address" column="address" />
+        <result property="latitude" column="latitude" />
+        <result property="longitude" column="longitude" />
+    </resultMap>
+
+
+    <sql id="selectTfsRecipeVo">
+        select id, order_id, fertilization_advice, planting_advice, summary,create_time,update_time from tfs_recipe
+    </sql>
+<!--    引入查询订单的vo-->
+    <sql id="selectTfsOrderVo">
+        select id, wx_user_id, soil_number, order_time, order_status,address,soil_url from tfs_order
+    </sql>
+
+
+<!--    查询已完成以及待配方的-->
+    <select id="selectTfsRecipeOrderList" parameterType="TfsOrder" resultMap="TfsOrderResult">
+        <include refid="selectTfsOrderVo"/>
+        <where>
+            <if test="id != null"> and id = #{id}</if>
+            <if test="wxUserId != null"> and wx_user_id = #{wxUserId}</if>
+            <if test="soilNumber != null"> and soil_number = #{soilNumber}</if>
+            <if test="orderTime != null"> and DATE(order_time) = #{orderTime}</if>
+            <if test="orderStatus == null"> and order_status IN ('3', '4')</if>
+            <if test="address != null"> and address = #{address}</if>
+            <if test="soilUrl != null"> and soil_url = #{soilUrl}</if>
+        </where>
+    </select>
+
+
+
+
+
+
+    <!--    通过orderid查到配方表-->
+    <select id="selectTfsRecipeByOrderId" parameterType="Long" resultMap="TfsRecipeResult">
+        <include refid="selectTfsRecipeVo"/>
+        where order_id = #{id}
+    </select>
+
+<!--    修改为查询订单-->
+<!--    <select id="selectTfsOrderById" parameterType="Long" resultMap="TfsOrderResult">-->
+<!--        <include refid="selectTfsOrderVo"/>-->
+<!--        where id = #{id}-->
+<!--    </select>-->
+        
+    <insert id="insertTfsRecipe" parameterType="TfsRecipe">
+        insert into tfs_recipe
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orderId != null">order_id,</if>
+            <if test="fertilizationAdvice != null and fertilizationAdvice != ''">fertilization_advice,</if>
+            <if test="plantingAdvice != null and plantingAdvice != ''">planting_advice,</if>
+            <if test="summary != null and summary != ''">summary,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orderId != null">#{orderId},</if>
+            <if test="fertilizationAdvice != null and fertilizationAdvice != ''">#{fertilizationAdvice},</if>
+            <if test="plantingAdvice != null and plantingAdvice != ''">#{plantingAdvice},</if>
+            <if test="summary != null and summary != ''">#{summary},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTfsRecipe" parameterType="TfsRecipe">
+        update tfs_recipe
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderId != null">order_id = #{orderId},</if>
+            <if test="fertilizationAdvice != null and fertilizationAdvice != ''">fertilization_advice = #{fertilizationAdvice},</if>
+            <if test="plantingAdvice != null and plantingAdvice != ''">planting_advice = #{plantingAdvice},</if>
+            <if test="summary != null and summary != ''">summary = #{summary},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTfsRecipeById" parameterType="Long">
+        delete from tfs_recipe where id = #{id}
+    </delete>
+
+    <delete id="deleteTfsRecipeByIds" parameterType="String">
+        delete from tfs_recipe where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

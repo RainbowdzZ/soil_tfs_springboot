@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.wx.mapper.TfsOrderMapper">
+    
+    <resultMap type="TfsOrder" id="TfsOrderResult">
+        <result property="id"    column="id"    />
+        <result property="wxUserId"    column="wx_user_id"    />
+        <result property="soilNumber"    column="soil_number"    />
+        <result property="orderTime"    column="order_time"    />
+        <result property="orderStatus"    column="order_status"    />
+        <result property="userCouponId" column="user_coupon_id" />
+        <result property="farmId" column="farm_id" />
+        <result property="soilUrl" column="soil_url" />
+        <result property="address" column="address" />
+        <result property="latitude" column="latitude" />
+        <result property="longitude" column="longitude" />
+        <result property="courierNumber" column="courier_number" />
+        <result property="shippingType" column="shipping_type" />
+    </resultMap>
+
+    <sql id="selectTfsOrderVo">
+        select id, wx_user_id, soil_number, order_time,farm_id, order_status,user_coupon_id,address,soil_url,courier_number,shipping_type from tfs_order
+    </sql>
+<!--    查询本日订单数-->
+    <select id="countOrdersToday" resultType="int">
+        SELECT COUNT(*) FROM tfs_order
+        WHERE DATE(order_time) = CURDATE()
+    </select>
+
+    <select id="selectTfsOrderList" parameterType="TfsOrder" resultMap="TfsOrderResult">
+        <include refid="selectTfsOrderVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="wxUserId != null "> and wx_user_id = #{wxUserId}</if>
+            <if test="soilNumber != null "> and soil_number = #{soilNumber}</if>
+            <if test="orderTime != null "> and DATE(order_time) = #{orderTime}</if>
+            <if test="orderStatus != null  and orderStatus != ''"> and order_status = #{orderStatus}</if>
+            <if test="userCouponId != null  and userCouponId != ''"> and user_coupon_id = #{userCouponId}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="soilUrl != null  and soilUrl != ''"> and soil_url = #{soilUrl}</if>
+            <if test="courierNumber != null  and courierNumber != ''"> and courier_number = #{courierNumber}</if>
+            <if test="shippingType != null  and shippingType != ''"> and shipping_type = #{shippingType}</if>
+        </where>
+    </select>
+    
+    <select id="selectTfsOrderById" parameterType="Long" resultMap="TfsOrderResult">
+        <include refid="selectTfsOrderVo"/>
+        where id = #{id}
+    </select>
+
+
+    <insert id="insertTfsOrderWithKey" parameterType="TfsOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into tfs_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="wxUserId != null">wx_user_id,</if>
+            <if test="soilNumber != null">soil_number,</if>
+            <if test="orderTime != null">order_time,</if>
+            <if test="orderStatus != null">order_status,</if>
+            <if test="userCouponId != null">user_coupon_id,</if>
+            <if test="farmId != null">farm_id,</if>
+            <if test="soilUrl != null">soil_url,</if>
+            <if test="address != null">address,</if>
+            <if test="latitude != null">latitude,</if>
+            <if test="longitude != null">longitude,</if>
+            <if test="courierNumber != null">courier_number,</if>
+            <if test="shippingType != null">shipping_type,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="wxUserId != null">#{wxUserId},</if>
+            <if test="soilNumber != null">#{soilNumber},</if>
+            <if test="orderTime != null">#{orderTime},</if>
+            <if test="orderStatus != null">#{orderStatus},</if>
+            <if test="userCouponId != null">#{userCouponId},</if>
+            <if test="farmId != null">#{farmId},</if>
+            <if test="soilUrl != null">#{soilUrl},</if>
+            <if test="address != null">#{address},</if>
+            <if test="latitude != null">#{latitude},</if>
+            <if test="longitude != null">#{longitude},</if>
+            <if test="courierNumber != null">#{courierNumber},</if>
+            <if test="shippingType != null">#{shippingType},</if>
+        </trim>
+    </insert>
+
+
+
+    <update id="updateTfsOrder" parameterType="TfsOrder">
+        update tfs_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="wxUserId != null">wx_user_id = #{wxUserId},</if>
+            <if test="soilNumber != null">soil_number = #{soilNumber},</if>
+            <if test="orderTime != null">order_time = #{orderTime},</if>
+            <if test="orderStatus != null">order_status = #{orderStatus},</if>
+            <if test="userCouponId != null">user_coupon_id = #{userCouponId},</if>
+            <if test="farmId != null">farm_id= #{farmId},</if>
+            <if test="soilUrl != null">soil_url= #{soilUrl},</if>
+            <if test="address != null">address= #{address},</if>
+            <if test="latitude != null">latitude= #{latitude},</if>
+            <if test="longitude != null">longitude= #{longitude},</if>
+            <if test="courierNumber != null">courier_number= #{courierNumber},</if>
+            <if test="shippingType != null">shipping_type= #{shippingType},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTfsOrderById" parameterType="Long">
+        delete from tfs_order where id = #{id}
+    </delete>
+
+    <delete id="deleteTfsOrderByIds" parameterType="String">
+        delete from tfs_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

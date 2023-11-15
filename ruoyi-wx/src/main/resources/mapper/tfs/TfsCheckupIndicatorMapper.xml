@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.wx.mapper.TfsCheckupIndicatorMapper">
+    
+    <resultMap type="TfsCheckupIndicator" id="TfsCheckupIndicatorResult">
+        <result property="id"    column="id"    />
+        <result property="indicatorName"    column="indicator_name"    />
+        <result property="unit"    column="unit"    />
+        <result property="createdAt"    column="created_at"    />
+        <result property="updatedAt"    column="updated_at"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectTfsCheckupIndicatorVo">
+        select id, indicator_name, unit, created_at, updated_at, status from tfs_checkup_indicator
+    </sql>
+
+    <select id="selectTfsCheckupIndicatorList" parameterType="TfsCheckupIndicator" resultMap="TfsCheckupIndicatorResult">
+        <include refid="selectTfsCheckupIndicatorVo"/>
+        <where>  
+            <if test="indicatorName != null  and indicatorName != ''"> and indicator_name like concat('%', #{indicatorName}, '%')</if>
+            <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
+            <if test="createdAt != null "> and created_at = #{createdAt}</if>
+            <if test="updatedAt != null "> and updated_at = #{updatedAt}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectTfsCheckupIndicatorById" parameterType="Long" resultMap="TfsCheckupIndicatorResult">
+        <include refid="selectTfsCheckupIndicatorVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTfsCheckupIndicator" parameterType="TfsCheckupIndicator">
+        insert into tfs_checkup_indicator
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="indicatorName != null and indicatorName != ''">indicator_name,</if>
+            <if test="unit != null and unit != ''">unit,</if>
+            <if test="createdAt != null">created_at,</if>
+            <if test="updatedAt != null">updated_at,</if>
+            <if test="status != null">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="indicatorName != null and indicatorName != ''">#{indicatorName},</if>
+            <if test="unit != null and unit != ''">#{unit},</if>
+            <if test="createdAt != null">#{createdAt},</if>
+            <if test="updatedAt != null">#{updatedAt},</if>
+            <if test="status != null">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTfsCheckupIndicator" parameterType="TfsCheckupIndicator">
+        update tfs_checkup_indicator
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="indicatorName != null and indicatorName != ''">indicator_name = #{indicatorName},</if>
+            <if test="unit != null and unit != ''">unit = #{unit},</if>
+            <if test="createdAt != null">created_at = #{createdAt},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTfsCheckupIndicatorById" parameterType="Long">
+        delete from tfs_checkup_indicator where id = #{id}
+    </delete>
+
+    <delete id="deleteTfsCheckupIndicatorByIds" parameterType="String">
+        delete from tfs_checkup_indicator where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

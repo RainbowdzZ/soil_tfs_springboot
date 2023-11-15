@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.wx.mapper.TfsCheckupMapper">
+
+    <resultMap id="TfsCheckupResult" type="TfsCheckup">
+        <result property="id"    column="id"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="checkupIndicatorId"    column="checkup_indicator_id"    />
+        <result property="checkupIndicatorName"    column="checkup_indicator_name"    />
+        <result property="unit"    column="unit"    />
+        <result property="checkupValue"    column="checkup_value"    />
+        <result property="submissionTime"    column="submission_time"    />
+    </resultMap>
+
+    <sql id="selectTfsCheckupVo">
+        select id, order_id, submission_time, checkup_indicator_id,checkup_indicator_name,unit,checkup_value from tfs_checkup
+    </sql>
+    <!--    引入查询订单的vo-->
+    <sql id="selectTfsOrderVo">
+        select id, wx_user_id, soil_number, order_time, order_status, recipe_id, checkup_id from tfs_order
+    </sql>
+
+<!--新增检测单-->
+    <insert id="insertTfsCheckup" parameterType="TfsCheckup">
+        insert into tfs_checkup
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orderId != null">order_id,</if>
+            <if test="checkupIndicatorId != null">checkup_indicator_id,</if>
+            <if test="checkupIndicatorName != null and checkupIndicatorName != ''">checkup_indicator_name,</if>
+            <if test="unit != null and unit != ''">unit,</if>
+            <if test="checkupValue != null">checkup_value,</if>
+            <if test="submissionTime == null">submission_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orderId != null">#{orderId},</if>
+            <if test="checkupIndicatorId != null">#{checkupIndicatorId},</if>
+            <if test="checkupIndicatorName != null and checkupIndicatorName != ''">#{checkupIndicatorName},</if>
+            <if test="unit != null and unit != ''">#{unit},</if>
+            <if test="checkupValue != null">#{checkupValue},</if>
+            <if test="submissionTime == null">now(),</if>
+        </trim>
+    </insert>
+
+<!--    根据订单id查询检测单-->
+    <select id="selectTfsCheckupByOrderId" parameterType="Long" resultMap="TfsCheckupResult">
+        <include refid="selectTfsCheckupVo"/>
+        where order_id = #{orderId}
+    </select>
+
+
+
+</mapper>
