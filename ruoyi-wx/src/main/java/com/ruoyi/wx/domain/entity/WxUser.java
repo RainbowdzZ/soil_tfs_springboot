@@ -41,7 +41,17 @@ public class WxUser extends BaseEntity
     @Excel(name = "头像")
     private String avatar;
 
-    public void setId(Long id) 
+    private Integer isDelete;
+
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
+    }
+
+    public void setId(Long id)
     {
         this.id = id;
     }
@@ -109,6 +119,7 @@ public class WxUser extends BaseEntity
             .append("createTime", getCreateTime())
             .append("updateBy", getUpdateBy())
             .append("updateTime", getUpdateTime())
+            .append("isDelete", getIsDelete())
             .toString();
     }
 }

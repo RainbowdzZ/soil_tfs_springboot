@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.wx.mapper.WxLunbotuMapper">
+    
+    <resultMap type="WxLunbotu" id="WxLunbotuResult">
+        <result property="id"    column="id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="imgUrl"    column="img_url"    />
+        <result property="name"    column="name"    />
+        <result property="contentType"    column="content_type"    />
+        <result property="content"    column="content"    />
+        <result property="state"    column="state"    />
+        <result property="sort"    column="sort"    />
+    </resultMap>
+
+    <sql id="selectWxLunbotuVo">
+        select id, create_by, create_time, update_by, update_time, del_flag, img_url, name, content_type, content, state, sort from wx_lunbotu
+    </sql>
+
+    <select id="selectWxLunbotuList" parameterType="WxLunbotu" resultMap="WxLunbotuResult">
+        <include refid="selectWxLunbotuVo"/>
+        <where>  
+            <if test="imgUrl != null  and imgUrl != ''"> and img_url = #{imgUrl}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="contentType != null "> and content_type = #{contentType}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="state != null "> and state = #{state}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+        </where>
+    </select>
+    
+    <select id="selectWxLunbotuById" parameterType="Long" resultMap="WxLunbotuResult">
+        <include refid="selectWxLunbotuVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWxLunbotu" parameterType="WxLunbotu" useGeneratedKeys="true" keyProperty="id">
+        insert into wx_lunbotu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="imgUrl != null">img_url,</if>
+            <if test="name != null">name,</if>
+            <if test="contentType != null">content_type,</if>
+            <if test="content != null">content,</if>
+            <if test="state != null">state,</if>
+            <if test="sort != null">sort,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="imgUrl != null">#{imgUrl},</if>
+            <if test="name != null">#{name},</if>
+            <if test="contentType != null">#{contentType},</if>
+            <if test="content != null">#{content},</if>
+            <if test="state != null">#{state},</if>
+            <if test="sort != null">#{sort},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWxLunbotu" parameterType="WxLunbotu">
+        update wx_lunbotu
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="imgUrl != null">img_url = #{imgUrl},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="contentType != null">content_type = #{contentType},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="state != null">state = #{state},</if>
+            <if test="sort != null">sort = #{sort},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWxLunbotuById" parameterType="Long">
+        delete from wx_lunbotu where id = #{id}
+    </delete>
+
+    <delete id="deleteWxLunbotuByIds" parameterType="String">
+        delete from wx_lunbotu where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

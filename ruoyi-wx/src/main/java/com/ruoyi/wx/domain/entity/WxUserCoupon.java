@@ -73,7 +73,17 @@ public class WxUserCoupon implements Serializable
     @Excel(name = "订单id")
     private Long orderId;
 
-    public void setId(Long id) 
+    private Integer isDelete;
+
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
+    }
+
+    public void setId(Long id)
     {
         this.id = id;
     }
@@ -176,6 +186,7 @@ public class WxUserCoupon implements Serializable
             .append("createTime", getCreateTime())
             .append("updateTime", getUpdateTime())
             .append("orderId", getOrderId())
+            .append("isDelete", getIsDelete())
             .toString();
     }
 }

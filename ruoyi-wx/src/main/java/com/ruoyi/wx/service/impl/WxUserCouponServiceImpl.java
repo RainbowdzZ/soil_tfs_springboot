@@ -14,6 +14,7 @@ import com.ruoyi.wx.domain.vo.CouponVO;
 import com.ruoyi.wx.domain.vo.IssuingCouponsVO;
 import com.ruoyi.wx.enums.CouponConstant;
 import com.ruoyi.wx.enums.CouponStatusContant;
+import com.ruoyi.wx.enums.IsDeleteConstant;
 import com.ruoyi.wx.mapper.WxCouponMapper;
 import com.ruoyi.wx.service.IWxCouponService;
 import com.ruoyi.wx.utils.UserContext;
@@ -130,6 +131,7 @@ public class WxUserCouponServiceImpl extends ServiceImpl<WxUserCouponMapper,WxUs
         List<WxCoupon> coupons = couponService.lambdaQuery()
                 .eq(WxCoupon::getStatus, CouponConstant.CouponStatus.IN_PROGRESS.getCode())
                 .eq(WxCoupon::getObtainWay, CouponConstant.ObtainWay.MANUAL.getCode())
+                .eq(WxCoupon::getIsDelete, IsDeleteConstant.NO.getCode())
                 .list();
 
 

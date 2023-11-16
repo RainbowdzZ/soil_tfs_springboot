@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 public class WxTokenInterceptor implements HandlerInterceptor {
 
@@ -50,25 +51,46 @@ public class WxTokenInterceptor implements HandlerInterceptor {
                     wxTokenService.verifyWxToken(wxLoginUser); // 自动续期
 
                     UserContext.setUser(wxLoginUser.getWxUser().getId());
+
+                    return true;
                 }else {
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     throw new GlobalException("用户未登录无法访问");
+//                    handleUnauthorizedException(response, "用户未登录无法访问");
+//                    return false;
                 }
 
-                return true;
+
             } else {
-                // Token无效，拒绝请求
+//                 Token无效，拒绝请求
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 throw new GlobalException("Token无效");
+//                handleUnauthorizedException(response, "Token无效");
+//                return false;
             }
         } catch (Exception e) {
             // 处理异常情况，记录日志
             log.error("Token验证出现异常: {}"+ e.getMessage());
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+
             return false;
         }
     }
 
+//    private void handleUnauthorizedException(HttpServletResponse response, String message) throws IOException {
+//        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//        response.setContentType("application/json;charset=UTF-8");
+//        String jsonResponse = String.format("{\"error\": \"%s\", \"message\": \"%s\"}", HttpServletResponse.SC_UNAUTHORIZED, message);
+//        response.getWriter().write(jsonResponse);
+////        response.getWriter().write("{\"error\": \"" + message + "\"}");
+//    }
+//
+//    private void handleInternalServerError(HttpServletResponse response, String message) throws IOException {
+//        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+//        response.setContentType("application/json;charset=UTF-8");
+//        String jsonResponse = String.format("{\"error\": \"%s\", \"message\": \"%s\"}", HttpServletResponse.SC_INTERNAL_SERVER_ERROR, message);
+//        response.getWriter().write(jsonResponse);
+//    }
 
         @Override
         public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {

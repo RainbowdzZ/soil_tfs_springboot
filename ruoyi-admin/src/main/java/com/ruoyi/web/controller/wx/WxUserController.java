@@ -7,6 +7,7 @@ import com.ruoyi.wx.domain.entity.WxUser;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.wx.enums.IsDeleteConstant;
 import com.ruoyi.wx.service.IWxUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,6 +31,7 @@ public class WxUserController extends BaseController
     public TableDataInfo list(WxUser wxUser)
     {
         startPage();
+        wxUser.setIsDelete(IsDeleteConstant.NO.getCode());
         List<WxUser> list = wxUserService.selectWxUserList(wxUser);
         return getDataTable(list);
     }

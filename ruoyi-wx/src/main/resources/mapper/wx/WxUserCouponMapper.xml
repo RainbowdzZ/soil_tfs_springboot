@@ -15,10 +15,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createTime"    column="create_time"    />
         <result property="updateTime"    column="update_time"    />
         <result property="orderId"    column="order_id"    />
+        <result property="isDelete"    column="is_delete"    />
     </resultMap>
 
     <sql id="selectWxUserCouponVo">
-        select id, user_id, coupon_id, term_begin_time, term_end_time, used_time, status, create_time, update_time, order_id from wx_user_coupon
+        select id, user_id, coupon_id, term_begin_time, term_end_time, used_time, status, create_time, update_time, order_id,is_delete from wx_user_coupon
     </sql>
 
     <select id="selectWxUserCouponList" parameterType="WxUserCoupon" resultMap="WxUserCouponResult">
@@ -28,6 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="couponId != null "> and coupon_id = #{couponId}</if>
             <if test="orderId != null "> and order_id = #{orderId}</if>
             <if test="status != null "> and status = #{status}</if>
+            <if test="isDelete != null "> and is_delete = #{isDelete}</if>
         </where>
     </select>
     
@@ -78,14 +80,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-    <delete id="deleteWxUserCouponById" parameterType="Long">
-        delete from wx_user_coupon where id = #{id}
-    </delete>
 
-    <delete id="deleteWxUserCouponByIds" parameterType="String">
-        delete from wx_user_coupon where id in 
+    <update id="deleteWxUserCouponById" parameterType="Long">
+        update wx_user_coupon
+        set is_delete = 1
+        where id = #{id}
+    </update>
+
+
+
+    <update id="deleteWxUserCouponByIds" parameterType="String">
+        update wx_user_coupon
+        set is_delete = 1
+        where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
-    </delete>
+    </update>
 </mapper>

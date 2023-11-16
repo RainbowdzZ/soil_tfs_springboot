@@ -36,6 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="provinceName != null  and provinceName != ''"> and province_name like concat('%', #{provinceName}, '%')</if>
             <if test="cityName != null  and cityName != ''"> and city_name like concat('%', #{cityName}, '%')</if>
             <if test="districtName != null  and districtName != ''"> and district_name like concat('%', #{districtName}, '%')</if>
+            <if test="isDeleted != null "> and is_deleted = #{isDeleted}</if>
         </where>
     </select>
     
@@ -102,14 +103,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-    <delete id="deleteWxUserFarmById" parameterType="Long">
-        delete from wx_user_farm where id = #{id}
-    </delete>
+    <update id="deleteWxUserFarmById" parameterType="Long">
+        update wx_user_farm
+        set is_deleted = 1
+        where id = #{id}
+    </update>
 
-    <delete id="deleteWxUserFarmByIds" parameterType="String">
-        delete from wx_user_farm where id in 
+
+    <update id="deleteWxUserFarmByIds" parameterType="String">
+        update wx_user_farm
+        set is_deleted = 1
+        where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
-    </delete>
+    </update>
 </mapper>

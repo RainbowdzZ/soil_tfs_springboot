@@ -15,10 +15,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createTime"    column="create_time"    />
         <result property="updateBy"    column="update_by"    />
         <result property="updateTime"    column="update_time"    />
+        <result property="isDelete"    column="is_delete"    />
     </resultMap>
 
     <sql id="selectWxUserVo">
-        select id, openid, nickname, phone, sex, avatar, create_by, create_time, update_by, update_time from wx_user
+        select id, openid, nickname, phone, sex, avatar, create_by, create_time, update_by, update_time,is_delete from wx_user
     </sql>
 
     <select id="selectWxUserList" parameterType="WxUser" resultMap="WxUserResult">
@@ -29,6 +30,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
             <if test="sex != null "> and sex = #{sex}</if>
             <if test="avatar != null  and avatar != ''"> and avatar = #{avatar}</if>
+            <if test="isDelete != null  and isDelete != ''"> and is_delete = #{isDelete}</if>
         </where>
     </select>
     
@@ -85,14 +87,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-    <delete id="deleteWxUserById" parameterType="Long">
-        delete from wx_user where id = #{id}
-    </delete>
 
-    <delete id="deleteWxUserByIds" parameterType="String">
-        delete from wx_user where id in 
+    <update id="deleteWxUserById" parameterType="Long">
+        update wx_user
+        set is_delete = 1
+        where id = #{id}
+    </update>
+
+
+    <update id="deleteWxUserByIds" parameterType="String">
+        update wx_user
+        set is_delete = 1
+        where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
-    </delete>
+    </update>
 </mapper>

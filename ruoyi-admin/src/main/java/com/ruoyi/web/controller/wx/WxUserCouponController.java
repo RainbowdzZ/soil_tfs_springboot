@@ -2,6 +2,8 @@ package com.ruoyi.web.controller.wx;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.wx.enums.IsDeleteConstant;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -43,6 +45,7 @@ public class WxUserCouponController extends BaseController
     public TableDataInfo list(WxUserCoupon wxUserCoupon)
     {
         startPage();
+        wxUserCoupon.setIsDelete(IsDeleteConstant.NO.getCode());
         List<WxUserCoupon> list = wxUserCouponService.selectWxUserCouponList(wxUserCoupon);
         return getDataTable(list);
     }

@@ -43,8 +43,12 @@ public class WxOrderController extends BaseController {
     public AjaxResult createOrder(@RequestBody TfsOrder tfsOrder)
     {
 
-        Long orderId = tfsOrderService.insertTfsOrder(tfsOrder);
-        return AjaxResult.success("订单提交成功",orderId);
+        try {
+            Long orderId = tfsOrderService.insertTfsOrder(tfsOrder);
+            return AjaxResult.success("订单提交成功",orderId);
+        }catch (Exception e){
+            return AjaxResult.error("订单提交失败："+e.getMessage());
+        }
     }
 
     /**

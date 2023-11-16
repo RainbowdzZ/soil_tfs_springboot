@@ -3,6 +3,7 @@ package com.ruoyi.wx.controller;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.wx.domain.entity.WxUserFarm;
+import com.ruoyi.wx.enums.IsDeleteConstant;
 import com.ruoyi.wx.service.IWxUserFarmService;
 import com.ruoyi.wx.utils.UserContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class WxFarmUserContoller extends BaseController {
      * 新增农户地址
      */
     @PostMapping("/farmUser/save")
-    public AjaxResult addAddress(@RequestBody  WxUserFarm wxUserFarm){
+    public AjaxResult addAddress(@RequestBody @Validated WxUserFarm wxUserFarm){
         wxUserFarm.setUserId(UserContext.getUser());
         return toAjax(wxUserFarmService.insertWxUserFarm(wxUserFarm));
     }
@@ -32,6 +33,7 @@ public class WxFarmUserContoller extends BaseController {
     public AjaxResult list(){
         WxUserFarm wxUserFarm = new WxUserFarm();
         wxUserFarm.setUserId(UserContext.getUser());
+        wxUserFarm.setIsDeleted(IsDeleteConstant.NO.getCode());
         return AjaxResult.success(wxUserFarmService.selectWxUserFarmList(wxUserFarm));
     }
 

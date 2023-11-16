@@ -11,6 +11,7 @@ import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -42,8 +43,8 @@ public class TfsOrder implements Serializable
     private Long soilNumber;
 
     /** 订单创建时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-    @Excel(name = "订单创建时间", width = 30, dateFormat = "yyyy-MM-dd hh:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "订单创建时间", width = 30, dateFormat = "yyyy-MM-dd")
     private LocalDateTime orderTime;
 
     /** 订单状态 */

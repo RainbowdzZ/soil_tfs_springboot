@@ -2,15 +2,19 @@ package com.ruoyi.wx.domain.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -48,21 +52,21 @@ public class WxCoupon implements Serializable
 
     /** 折扣类型，1：满减，2：每满减，3：折扣，4：无门槛 */
     @Excel(name = "折扣类型，1：满减，2：每满减，3：折扣，4：无门槛")
-    @NotEmpty(message = "折扣类型不能为空")
+    @NotNull(message = "折扣类型不能为空")
     private Long discountType;
 
     /** 使用门槛，0：表示无门槛，其他值：最低消费金额 */
     @Excel(name = "使用门槛，0：表示无门槛，其他值：最低消费金额")
-    @NotEmpty(message = "使用门槛不能为空")
+    @NotNull(message = "使用门槛不能为空")
     private Long thresholdAmount;
 
     /** 获取方式：1：手动领取，2：兑换码 */
     @Excel(name = "获取方式：1：手动领取，2：兑换码")
-    @NotEmpty(message = "获取方式不能为空")
+    @NotNull(message = "获取方式不能为空")
     private Long obtainWay;
 
     /** 开始发放时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "开始发放时间", width = 30, dateFormat = "yyyy-MM-dd")
     private LocalDateTime issueBeginTime;
 
@@ -91,7 +95,7 @@ public class WxCoupon implements Serializable
 
     /** 总数量，不超过5000 */
     @Excel(name = "总数量，不超过5000")
-    @NotEmpty(message = "总数量不能为空")
+    @NotNull(message = "总数量不能为空")
     private Integer totalNum;
 
     /** 已发行数量，用于判断是否超发 */
@@ -104,7 +108,7 @@ public class WxCoupon implements Serializable
 
     /** 每个人限领的数量，默认1 */
     @Excel(name = "每个人限领的数量，默认1")
-    @NotEmpty(message = "每个人限领的数量不能为空")
+    @NotNull(message = "每个人限领的数量不能为空")
     private Integer userLimit;
 
     /** 创建人 */
@@ -122,6 +126,33 @@ public class WxCoupon implements Serializable
     /** 更新时间 */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
+
+    private Integer isDelete;
+
+    /** 请求参数 */
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, Object> params;
+
+    public Map<String, Object> getParams()
+    {
+        if (params == null)
+        {
+            params = new HashMap<>();
+        }
+        return params;
+    }
+
+    public void setParams(Map<String, Object> params)
+    {
+        this.params = params;
+    }
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
+    }
 
     public LocalDateTime getCreateTime() {
         return createTime;
@@ -325,6 +356,7 @@ public class WxCoupon implements Serializable
             .append("updateTime", getUpdateTime())
             .append("creater", getCreater())
             .append("updater", getUpdater())
+            .append("isDelete", getIsDelete())
             .toString();
     }
 }

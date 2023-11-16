@@ -34,9 +34,15 @@ public class WxCouponUserController extends BaseController {
      */
     @PostMapping("/userCoupons/{id}/receive")
     public AjaxResult receiveCoupon(@PathVariable("id") Long couponId){
-        wxUserCouponService.receiveCoupon(couponId);
 
-        return AjaxResult.success();
+
+        try {
+            wxUserCouponService.receiveCoupon(couponId);
+            return AjaxResult.success();
+        }catch (Exception e) {
+            return AjaxResult.error(e.getMessage());
+        }
+
     }
 
     /**
@@ -45,10 +51,15 @@ public class WxCouponUserController extends BaseController {
     @GetMapping("/userCoupons/page")
     public AjaxResult userCouponsPage(WxUserCoupon wxUserCoupon){
 
+        try {
+            List<CouponVO> coupons = wxUserCouponService.queryUserCoupons(wxUserCoupon);
 
-        List<CouponVO> coupons = wxUserCouponService.queryUserCoupons(wxUserCoupon);
+            return AjaxResult.success(coupons);
+        }catch (Exception e) {
+            return AjaxResult.error(e.getMessage());
+        }
 
-        return AjaxResult.success(coupons);
+
     }
 
 
@@ -57,8 +68,14 @@ public class WxCouponUserController extends BaseController {
      */
     @PostMapping("/userCoupons/{id}/use/{orderId}")
     public AjaxResult useCoupon(@PathVariable("id") Long id,@PathVariable("orderId") Long orderId){
-        wxUserCouponService.useCoupon(id,orderId);
-        return AjaxResult.success();
+
+        try {
+            wxUserCouponService.useCoupon(id,orderId);
+            return AjaxResult.success();
+        }catch (Exception e) {
+            return AjaxResult.error(e.getMessage());
+        }
+
     }
 
     /**
@@ -76,7 +93,11 @@ public class WxCouponUserController extends BaseController {
      */
     @PostMapping("/userCoupons/{id}/return")
     public AjaxResult returnCoupon(@PathVariable("id") Long id){
-        wxUserCouponService.returnCoupon(id);
-        return AjaxResult.success();
+        try {
+            wxUserCouponService.returnCoupon(id);
+            return AjaxResult.success();
+        }catch (Exception e) {
+            return AjaxResult.error(e.getMessage());
+        }
     }
 }

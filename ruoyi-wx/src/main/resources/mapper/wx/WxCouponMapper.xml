@@ -25,10 +25,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateTime"    column="update_time"    />
         <result property="creater"    column="creater"    />
         <result property="updater"    column="updater"    />
+        <result property="isDelete"    column="is_delete"    />
     </resultMap>
 
     <sql id="selectWxCouponVo">
-        select id, name, type, discount_type, threshold_amount, obtain_way, issue_begin_time, issue_end_time, term_days, term_begin_time, term_end_time, status, total_num, issue_num, used_num, user_limit, create_time, update_time, creater, updater from wx_coupon
+        select id, name, type, discount_type, threshold_amount, obtain_way, issue_begin_time, issue_end_time, term_days, term_begin_time, term_end_time, status, total_num, issue_num, used_num, user_limit, create_time, update_time, creater, updater,is_delete from wx_coupon
     </sql>
 
     <select id="selectWxCouponList" parameterType="WxCoupon" resultMap="WxCouponResult">
@@ -41,13 +42,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="obtainWay != null "> and obtain_way = #{obtainWay}</if>
             <if test="issueBeginTime != null "> and issue_begin_time = #{issueBeginTime}</if>
             <if test="issueEndTime != null "> and issue_end_time = #{issueEndTime}</if>
+
             <if test="termDays != null "> and term_days = #{termDays}</if>
             <if test="termBeginTime != null "> and term_begin_time = #{termBeginTime}</if>
             <if test="termEndTime != null "> and term_end_time = #{termEndTime}</if>
+
             <if test="status != null "> and status = #{status}</if>
             <if test="userLimit != null "> and user_limit = #{userLimit}</if>
             <if test="creater != null "> and creater = #{creater}</if>
             <if test="updater != null "> and updater = #{updater}</if>
+            <if test="isDelete != null "> and is_delete = #{isDelete}</if>
         </where>
     </select>
     
@@ -128,17 +132,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-    <delete id="deleteWxCouponById" parameterType="Long">
-        delete from wx_coupon where id = #{id}
-    </delete>
 
-    <delete id="deleteWxCouponByIds" parameterType="String">
-        delete from wx_coupon where id in 
+    <update id="deleteWxCouponById" parameterType="Long">
+        update wx_coupon
+        set is_delete = 1
+        where id = #{id}
+    </update>
+
+
+    <update id="deleteWxCouponByIds" parameterType="String">
+        update wx_coupon
+        set is_delete = 1
+        where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
-    </delete>
-
+    </update>
 <!--    <update id="incrIssueNum" parameterType="Long">-->
 <!--        update wx_coupon set issue_num = issue_num + 1 where  id = #{couponId}-->
 <!--    </update>-->

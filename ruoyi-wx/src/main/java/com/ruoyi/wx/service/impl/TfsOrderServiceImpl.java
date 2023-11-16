@@ -2,6 +2,8 @@ package com.ruoyi.wx.service.impl;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ruoyi.common.exception.order.NotParmException;
+import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.wx.domain.entity.TfsOrder;
 import com.ruoyi.wx.domain.entity.WxUserFarm;
 import com.ruoyi.wx.domain.vo.WxOrderVo;
@@ -165,6 +167,12 @@ public class TfsOrderServiceImpl extends ServiceImpl<TfsOrderMapper, TfsOrder> i
      */
     @Override
     public Long insertTfsOrder(TfsOrder tfsOrder) {
+
+
+        if (tfsOrder.getFarmId()==null){
+            throw new NotParmException();
+        }
+
         int countToday = countOrdersToday();
         // 生成新的土壤号
         Long soilNumber = generateSoilNumber(countToday);
@@ -174,6 +182,7 @@ public class TfsOrderServiceImpl extends ServiceImpl<TfsOrderMapper, TfsOrder> i
             // 处理转换错误
             e.printStackTrace();
         }
+
 
         tfsOrder.setOrderTime(LocalDateTime.now());
         tfsOrder.setOrderStatus(OrderStatus.UNPAID.getCode());
@@ -294,6 +303,7 @@ public class TfsOrderServiceImpl extends ServiceImpl<TfsOrderMapper, TfsOrder> i
             wxOrderVo.setSoilNumber(tfsOrder.getSoilNumber());
             wxOrderVo.setSoilUrl(tfsOrder.getSoilUrl());
             wxOrderVo.setShippingType(tfsOrder.getShippingType());
+
             WxUserFarm farm = wxUserFarmService.selectWxUserFarmById(tfsOrder.getFarmId());
             wxOrderVo.setPlantCategory(farm.getPlantCategory());
             wxOrderVo.setScale(farm.getScale());
