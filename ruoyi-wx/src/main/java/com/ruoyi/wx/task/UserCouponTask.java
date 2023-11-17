@@ -30,4 +30,12 @@ public class UserCouponTask {
 
     }
 
+    public void checkUserCouponExpire() {
+
+        LOGGER.info("优惠券过期检查开始");
+        wxUserCouponService.couponsExpired();
+        LOGGER.info("优惠券过期检查结束");
+
+    }
+
 }

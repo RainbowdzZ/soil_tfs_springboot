@@ -64,7 +64,7 @@ public class WxUserCouponServiceImpl extends ServiceImpl<WxUserCouponMapper,WxUs
     @Override
     public List<WxUserCoupon> selectWxUserCouponList(WxUserCoupon wxUserCoupon)
     {
-        couponsExpired();
+//        couponsExpired();
         return wxUserCouponMapper.selectWxUserCouponList(wxUserCoupon);
     }
 

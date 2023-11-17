@@ -58,6 +58,7 @@ public class WxOrderController extends BaseController {
     @GetMapping("/list/{userId}")
     public TableDataInfo list(@PathVariable("userId") Long wxUserId)
     {
+
         startPage();
         List<WxOrderVo> orderVos=tfsOrderService.selectOrderByUserId(wxUserId);
         return getDataTable(orderVos);
@@ -131,6 +132,9 @@ public class WxOrderController extends BaseController {
             //向高德地图发送请求获取详细地址
             JSONObject object = locationUtils.getCounterLocation(params);
             String address = object.getString("formatted_address");
+            if (address == null || address.equals("")) {
+                return AjaxResult.error("上传采土图片与定位信息失败：获取详细地址失败");
+            }
             tfsOrder.setAddress(address);
             tfsOrderService.updateTfsOrder(tfsOrder);
             return AjaxResult.success("上传采土图片与定位信息成功");

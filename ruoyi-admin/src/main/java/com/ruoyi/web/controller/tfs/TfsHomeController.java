@@ -19,7 +19,7 @@ public class TfsHomeController extends BaseController {
     private ITfsHomeService tfsHomeService;
     @Autowired
     private TfsHomeMapper tfsHomeMapper;
-    @PreAuthorize("@ss.hasPermi('tfs:index:home')")
+    @PreAuthorize("@ss.hasPermi('home')")
     @GetMapping
     public AjaxResult homeData(int type){
         HomeDto homeDto = new HomeDto();

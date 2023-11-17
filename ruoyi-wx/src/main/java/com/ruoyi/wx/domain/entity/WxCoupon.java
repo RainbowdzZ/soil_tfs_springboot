@@ -66,12 +66,12 @@ public class WxCoupon implements Serializable
     private Long obtainWay;
 
     /** 开始发放时间 */
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "开始发放时间", width = 30, dateFormat = "yyyy-MM-dd")
     private LocalDateTime issueBeginTime;
 
     /** 结束发放时间 */
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "结束发放时间", width = 30, dateFormat = "yyyy-MM-dd")
     private LocalDateTime issueEndTime;
 

@@ -46,6 +46,7 @@ public class WxCouponController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(WxCoupon wxCoupon)
     {
+        wxCouponService.checkCouponExpired();
         startPage();
         wxCoupon.setIsDelete(IsDeleteConstant.NO.getCode());
         List<WxCoupon> list = wxCouponService.selectWxCouponList(wxCoupon);

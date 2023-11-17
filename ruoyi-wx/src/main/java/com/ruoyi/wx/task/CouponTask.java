@@ -3,6 +3,7 @@ package com.ruoyi.wx.task;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.wx.domain.entity.WxUserCoupon;
 import com.ruoyi.wx.enums.CouponConstant;
+import com.ruoyi.wx.service.IWxCouponService;
 import com.ruoyi.wx.service.IWxUserCouponService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,10 +20,12 @@ public class CouponTask {
     private IWxUserCouponService wxUserCouponService;
 
 
+    @Autowired
+    private IWxCouponService wxCouponService;
     public void checkCouponExpire() {
 
         LOGGER.info("优惠券过期检查开始");
-        wxUserCouponService.couponsExpired();
+        wxCouponService.checkCouponExpired();
         LOGGER.info("优惠券过期检查结束");
 
     }
