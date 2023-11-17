@@ -7,6 +7,7 @@ import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.wx.domain.entity.TfsOrder;
 import com.ruoyi.wx.domain.entity.WxUserFarm;
 import com.ruoyi.wx.domain.vo.WxOrderVo;
+import com.ruoyi.wx.enums.IsDeleteConstant;
 import com.ruoyi.wx.enums.OrderStatus;
 import com.ruoyi.wx.mapper.TfsOrderMapper;
 import com.ruoyi.wx.service.ITfsOrderService;
@@ -286,6 +287,7 @@ public class TfsOrderServiceImpl extends ServiceImpl<TfsOrderMapper, TfsOrder> i
         // 查询订单列表
         List<TfsOrder> list = lambdaQuery()
                 .eq(TfsOrder::getWxUserId, wxUserId)
+                .eq(TfsOrder::getIsDelete, IsDeleteConstant.NO.getCode())
                 .orderByDesc(TfsOrder::getOrderTime)
                 .list();
 

@@ -22,6 +22,7 @@ public class TfsCheckupServiceImpl implements ITfsCheckupService {
     @Override
     public int insertTfsCheckup(TfsCheckup tfsCheckup)
     {
+
         return tfsCheckupMapper.insertTfsCheckup(tfsCheckup);
     }
 

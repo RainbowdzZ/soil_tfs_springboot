@@ -18,10 +18,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="longitude" column="longitude" />
         <result property="courierNumber" column="courier_number" />
         <result property="shippingType" column="shipping_type" />
+        <result property="isDelete" column="is_delete" />
     </resultMap>
 
     <sql id="selectTfsOrderVo">
-        select id, wx_user_id, soil_number, order_time,farm_id, order_status,user_coupon_id,address,soil_url,courier_number,shipping_type from tfs_order
+        select id, wx_user_id, soil_number, order_time,farm_id, order_status,user_coupon_id,address,soil_url,courier_number,shipping_type,is_delete from tfs_order
     </sql>
 <!--    查询本日订单数-->
     <select id="countOrdersToday" resultType="int">
@@ -42,6 +43,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="soilUrl != null  and soilUrl != ''"> and soil_url = #{soilUrl}</if>
             <if test="courierNumber != null  and courierNumber != ''"> and courier_number = #{courierNumber}</if>
             <if test="shippingType != null  and shippingType != ''"> and shipping_type = #{shippingType}</if>
+            <if test="isDelete != null"> and is_delete = #{isDelete}</if>
         </where>
     </select>
     
@@ -106,14 +108,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-    <delete id="deleteTfsOrderById" parameterType="Long">
-        delete from tfs_order where id = #{id}
-    </delete>
 
-    <delete id="deleteTfsOrderByIds" parameterType="String">
-        delete from tfs_order where id in 
+    <update id="deleteTfsOrderById" parameterType="Long">
+        update tfs_order
+        set is_delete = 1
+        where id = #{id}
+    </update>
+
+
+    <update id="deleteTfsOrderByIds" parameterType="String">
+        update tfs_order
+        set is_delete = 1
+        where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
-    </delete>
+    </update>
+
 </mapper>

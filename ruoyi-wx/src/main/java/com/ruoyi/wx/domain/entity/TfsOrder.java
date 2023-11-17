@@ -65,7 +65,17 @@ public class TfsOrder implements Serializable
 
     private String courierNumber; // 快递单号
 
-    private Long shippingType; // 配送方式
+    private Long shippingType; // 配送方式]
+
+    private Integer isDelete; // 是否删除
+
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
+    }
 
     public String getCourierNumber() {
         return courierNumber;
@@ -200,6 +210,7 @@ public class TfsOrder implements Serializable
                 .append("latitude", getLatitude())
                 .append("longitude", getLongitude())
                 .append("address", getAddress())
+                .append("isDelete", getIsDelete())
             .toString();
     }
 }

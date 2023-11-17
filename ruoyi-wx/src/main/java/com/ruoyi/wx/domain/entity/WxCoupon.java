@@ -71,7 +71,7 @@ public class WxCoupon implements Serializable
     private LocalDateTime issueBeginTime;
 
     /** 结束发放时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "结束发放时间", width = 30, dateFormat = "yyyy-MM-dd")
     private LocalDateTime issueEndTime;
 
@@ -131,7 +131,9 @@ public class WxCoupon implements Serializable
 
     /** 请求参数 */
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @TableField(exist = false)
     private Map<String, Object> params;
+
 
     public Map<String, Object> getParams()
     {

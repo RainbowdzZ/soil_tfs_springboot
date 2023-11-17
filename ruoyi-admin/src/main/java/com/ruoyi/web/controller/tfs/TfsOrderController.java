@@ -7,6 +7,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.wx.domain.entity.TfsOrder;
+import com.ruoyi.wx.enums.IsDeleteConstant;
 import com.ruoyi.wx.service.ITfsOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -37,6 +38,7 @@ public class TfsOrderController extends BaseController
     public TableDataInfo list(TfsOrder tfsOrder)
     {
         startPage();
+        tfsOrder.setIsDelete(IsDeleteConstant.NO.getCode());
         List<TfsOrder> list = tfsOrderService.selectTfsOrderList(tfsOrder);
         return getDataTable(list);
     }

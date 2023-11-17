@@ -40,8 +40,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="discountType != null "> and discount_type = #{discountType}</if>
             <if test="thresholdAmount != null "> and threshold_amount = #{thresholdAmount}</if>
             <if test="obtainWay != null "> and obtain_way = #{obtainWay}</if>
-            <if test="issueBeginTime != null "> and issue_begin_time = #{issueBeginTime}</if>
-            <if test="issueEndTime != null "> and issue_end_time = #{issueEndTime}</if>
+            <if test="issueBeginTime != null "> and DATE(issue_begin_time) = #{issueBeginTime}</if>
+            <if test="issueEndTime != null "> and DATE(issue_end_time) = #{issueEndTime}</if>
 
             <if test="termDays != null "> and term_days = #{termDays}</if>
             <if test="termBeginTime != null "> and term_begin_time = #{termBeginTime}</if>
