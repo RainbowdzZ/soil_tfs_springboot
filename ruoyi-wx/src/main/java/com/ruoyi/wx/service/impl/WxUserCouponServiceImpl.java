@@ -77,7 +77,20 @@ public class WxUserCouponServiceImpl extends ServiceImpl<WxUserCouponMapper,WxUs
     @Override
     public int insertWxUserCoupon(WxUserCoupon wxUserCoupon)
     {
+        Long couponId = wxUserCoupon.getCouponId();
+        WxCoupon coupon = wxCouponMapper.selectById(couponId);
+        //设置优惠券的有效期
+        LocalDateTime termBeginTime = coupon.getTermBeginTime();
+        LocalDateTime termEndTime = coupon.getTermEndTime();
+        if (termBeginTime==null){
+            termBeginTime = LocalDateTime.now();
+            termEndTime = termBeginTime.plusDays(coupon.getTermDays());
+        }
+
+        wxUserCoupon.setTermBeginTime(termBeginTime);
+        wxUserCoupon.setTermEndTime(termEndTime);
         wxUserCoupon.setCreateTime(LocalDateTime.now());
+        int r=wxCouponMapper.incrIssueNum(couponId);
         return wxUserCouponMapper.insertWxUserCoupon(wxUserCoupon);
     }
 

@@ -83,7 +83,9 @@ public class CouponConstant {
         //手动领取
         MANUAL(1L, "手动领取"),
         //兑换码
-        EXCHANGE_CODE(2L, "兑换码");
+        EXCHANGE_CODE(2L, "兑换码"),
+        //主动发放
+        ACTIVE_ISSUE(3L, "主动发放");
 
         private Long code;
         private String msg;

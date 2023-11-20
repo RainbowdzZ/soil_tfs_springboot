@@ -1,6 +1,7 @@
 package com.ruoyi.wx.controller;
 
 import com.alibaba.fastjson2.JSONObject;
+import com.ruoyi.common.annotation.RepeatSubmit;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
@@ -39,6 +40,7 @@ public class WxOrderController extends BaseController {
     /**
      * 提交订单
      */
+    @RepeatSubmit(interval = 1000, message = "请求过于频繁")
     @PostMapping("/create")
     public AjaxResult createOrder(@RequestBody TfsOrder tfsOrder)
     {
