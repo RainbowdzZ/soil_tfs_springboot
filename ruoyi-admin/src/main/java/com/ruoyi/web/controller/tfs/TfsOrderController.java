@@ -6,15 +6,21 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.wx.domain.dto.TfsOrderDto;
 import com.ruoyi.wx.domain.entity.TfsOrder;
+import com.ruoyi.wx.domain.entity.WxUserFarm;
 import com.ruoyi.wx.enums.IsDeleteConstant;
 import com.ruoyi.wx.service.ITfsOrderService;
+import com.ruoyi.wx.service.IWxUserFarmService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 订单管理Controller
@@ -29,6 +35,9 @@ public class TfsOrderController extends BaseController
     @Autowired
     private ITfsOrderService tfsOrderService;
 
+    @Autowired
+    private IWxUserFarmService wxUserFarmService;
+
 
     /**
      * 查询订单管理列表
@@ -40,7 +49,21 @@ public class TfsOrderController extends BaseController
         startPage();
         tfsOrder.setIsDelete(IsDeleteConstant.NO.getCode());
         List<TfsOrder> list = tfsOrderService.selectTfsOrderList(tfsOrder);
-        return getDataTable(list);
+        List<TfsOrderDto> tfsOrderDtosList=list.stream().map(item->{
+            TfsOrderDto tfsOrderDto = new TfsOrderDto();
+            BeanUtils.copyProperties(item,tfsOrderDto);
+            Long farmId=item.getFarmId();
+            WxUserFarm wxUserFarm=wxUserFarmService.selectWxUserFarmById(farmId);
+            if(wxUserFarm!=null){
+                String userName=wxUserFarm.getConsignee();
+                String phone= wxUserFarm.getPhone();
+                tfsOrderDto.setConsignee(userName);
+                tfsOrderDto.setPhone(phone);
+            }
+            return tfsOrderDto;
+        }).collect(Collectors.toList());
+
+        return getDataTable(tfsOrderDtosList);
     }
 
     /**
