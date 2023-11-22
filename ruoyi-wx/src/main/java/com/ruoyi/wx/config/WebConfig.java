@@ -19,7 +19,7 @@ public class WebConfig implements WebMvcConfigurer{
     public void addInterceptors(org.springframework.web.servlet.config.annotation.InterceptorRegistry registry) {
         registry.addInterceptor(wxTokenInterceptor())
                 .addPathPatterns("/wx/**")
-                .excludePathPatterns("/wx/wxLogin","/wx/wxuser/**","/wx/coupon/**","/wx/usercoupon/**","/wx/farm/**","/wx/lunbotu/**","/wx/home/**","/wx/feedback/**","/wx/sendOrderMessage","/wx/sendCheckupMessage");
+                .excludePathPatterns("/wx/wxLogin","/wx/wxuser/**","/wx/coupon/**","/wx/usercoupon/**","/wx/farm/**","/wx/lunbotu/**","/wx/activity/**","/wx/home/**","/wx/feedback/**","/wx/sendOrderMessage","/wx/sendCheckupMessage");
     }
 
 }
