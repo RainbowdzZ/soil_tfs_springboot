@@ -20,11 +20,10 @@ public class WxCouponUserController extends BaseController {
     @Autowired
     private IWxUserCouponService wxUserCouponService;
     /**
-     * 查询可以领取的优惠券列表
+     * 查询可以发放的优惠券列表
      */
-    @GetMapping("/userCoupons/list")
-    public TableDataInfo userCouponsList(){
-        startPage();
+    @GetMapping("/IssuesCoupons/list")
+    public TableDataInfo IssuesCouponsList(){
         List<IssuingCouponsVO> coupons = wxUserCouponService.queryIssuingCoupons();
         return getDataTable(coupons);
     }

@@ -90,6 +90,7 @@ public class WxUserCouponServiceImpl extends ServiceImpl<WxUserCouponMapper,WxUs
         wxUserCoupon.setTermBeginTime(termBeginTime);
         wxUserCoupon.setTermEndTime(termEndTime);
         wxUserCoupon.setCreateTime(LocalDateTime.now());
+
         int r=wxCouponMapper.incrIssueNum(couponId);
         return wxUserCouponMapper.insertWxUserCoupon(wxUserCoupon);
     }
@@ -333,6 +334,7 @@ public class WxUserCouponServiceImpl extends ServiceImpl<WxUserCouponMapper,WxUs
         WxUserCoupon uc = new WxUserCoupon();
         uc.setStatus(CouponStatusContant.UserCouponStatus.USED.getCode());
         uc.setUpdateTime(LocalDateTime.now());
+        uc.setUsedTime(LocalDateTime.now());
         uc.setId(id);
         uc.setOrderId(orderId);
         updateById(uc);
