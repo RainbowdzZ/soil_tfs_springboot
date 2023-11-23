@@ -25,6 +25,7 @@ public class WxOrderVo {
 
     private Long shippingType;
 
+
     public Long getShippingType() {
         return shippingType;
     }
