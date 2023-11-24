@@ -62,8 +62,9 @@ public class TfsOrderController extends BaseController
             }
             return tfsOrderDto;
         }).collect(Collectors.toList());
-
-        return getDataTable(tfsOrderDtosList);
+        TableDataInfo tableDataInfo = getDataTable(list);
+        tableDataInfo.setRows(tfsOrderDtosList);
+        return tableDataInfo;
     }
 
     /**

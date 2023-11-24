@@ -1,9 +1,8 @@
 package com.ruoyi.wx.service.impl;
 
-import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.exception.order.NotParmException;
-import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.wx.domain.dto.TfsOrderDto;
 import com.ruoyi.wx.domain.entity.TfsOrder;
 import com.ruoyi.wx.domain.entity.WxUserFarm;
 import com.ruoyi.wx.domain.vo.WxOrderVo;
@@ -14,7 +13,7 @@ import com.ruoyi.wx.service.ITfsOrderService;
 import com.ruoyi.wx.mapper.WxCouponMapper;
 import com.ruoyi.wx.service.IWxUserCouponService;
 import com.ruoyi.wx.service.IWxUserFarmService;
-import com.ruoyi.wx.utils.LocationUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,8 +25,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
-
-
+import java.util.stream.Collectors;
 
 
 /**
@@ -132,7 +130,7 @@ public class TfsOrderServiceImpl extends ServiceImpl<TfsOrderMapper, TfsOrder> i
 
     /**
      * 查询订单管理列表
-     * 
+     *
      * @param tfsOrder 订单管理
      * @return 订单管理
      */
@@ -144,8 +142,42 @@ public class TfsOrderServiceImpl extends ServiceImpl<TfsOrderMapper, TfsOrder> i
         for (TfsOrder order : tfsOrders) {
             checkOrderExpiration(order);
         }
+
         return tfsOrders;
     }
+
+    /**
+     * 查询订单管理列表（增加联系人、联系电话字段）
+     * @param tfsOrder
+     * @return
+     */
+    @Override
+    public List<TfsOrderDto> selectTfsOrderDtoList(TfsOrder tfsOrder)
+    {
+
+        List<TfsOrder> tfsOrders = tfsOrderMapper.selectTfsOrderList(tfsOrder);
+        for (TfsOrder order : tfsOrders) {
+            checkOrderExpiration(order);
+        }
+        List<TfsOrderDto> tfsOrderDtosList=tfsOrders.stream().map(item->{
+            TfsOrderDto tfsOrderDto = new TfsOrderDto();
+            BeanUtils.copyProperties(item,tfsOrderDto);
+            Long farmId=item.getFarmId();
+            WxUserFarm wxUserFarm=wxUserFarmService.selectWxUserFarmById(farmId);
+            if(wxUserFarm!=null){
+                String userName=wxUserFarm.getConsignee();
+                String phone= wxUserFarm.getPhone();
+                tfsOrderDto.setConsignee(userName);
+                tfsOrderDto.setPhone(phone);
+            }
+            return tfsOrderDto;
+        }).collect(Collectors.toList());
+
+        return tfsOrderDtosList;
+    }
+
+
+
 
     @Override
     public void checkOrderExpiration(TfsOrder tfsOrder) {

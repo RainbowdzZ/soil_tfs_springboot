@@ -1,6 +1,7 @@
 package com.ruoyi.wx.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ruoyi.wx.domain.dto.TfsOrderDto;
 import com.ruoyi.wx.domain.entity.TfsOrder;
 import com.ruoyi.wx.domain.entity.WxUserCoupon;
 import com.ruoyi.wx.domain.vo.WxOrderVo;
@@ -29,7 +30,7 @@ public interface ITfsOrderService  extends IService<TfsOrder>
 
     /**
      * 查询订单管理列表
-     * 
+     *
      * @param tfsOrder 订单管理
      * @return 订单管理集合
      */
@@ -79,6 +80,13 @@ public interface ITfsOrderService  extends IService<TfsOrder>
      * @return
      */
     List<WxOrderVo> selectOrderByUserId(Long wxUserId);
+
+    /**
+     * 订单列表增加联系人，联系电话查询
+     * @param tfsOrder
+     * @return
+     */
+    List<TfsOrderDto> selectTfsOrderDtoList(TfsOrder tfsOrder);
 
     /**
      * 检测订单是否过期
