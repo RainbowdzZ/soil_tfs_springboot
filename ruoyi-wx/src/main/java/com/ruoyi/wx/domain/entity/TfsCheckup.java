@@ -6,7 +6,6 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class TfsCheckup extends BaseEntity {
     private static final long serialVersionUID = 1L;
@@ -36,6 +35,18 @@ public class TfsCheckup extends BaseEntity {
     /**检测指标数值*/
     @Excel(name = "检测指标数组")
     private BigDecimal checkupValue;
+    /**检测指标等级*/
+    @Excel(name = "检测指标数组")
+    private int level;
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
     public Long getId() {
         return id;
     }

@@ -1,27 +1,29 @@
 package com.ruoyi.wx.service.impl;
 
-import java.util.List;
+import com.ruoyi.wx.domain.entity.TfsCheckupIndicator;
+import com.ruoyi.wx.mapper.TfsCheckupIndicatorMapper;
+import com.ruoyi.wx.service.ITfsCheckupIndicatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.wx.mapper.TfsCheckupIndicatorMapper;
-import com.ruoyi.wx.domain.entity.TfsCheckupIndicator;
-import com.ruoyi.wx.service.ITfsCheckupIndicatorService;
+
+import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * 检测指标管理Service业务层处理
- * 
- * @author riki
- * @date 2023-11-09
+ *
+ * @author ruoyi
+ * @date 2023-11-23
  */
 @Service
-public class TfsCheckupIndicatorServiceImpl implements ITfsCheckupIndicatorService 
+public class TfsCheckupIndicatorServiceImpl implements ITfsCheckupIndicatorService
 {
     @Autowired
     private TfsCheckupIndicatorMapper tfsCheckupIndicatorMapper;
 
     /**
      * 查询检测指标管理
-     * 
+     *
      * @param id 检测指标管理主键
      * @return 检测指标管理
      */
@@ -33,7 +35,7 @@ public class TfsCheckupIndicatorServiceImpl implements ITfsCheckupIndicatorServi
 
     /**
      * 查询检测指标管理列表
-     * 
+     *
      * @param tfsCheckupIndicator 检测指标管理
      * @return 检测指标管理
      */
@@ -45,7 +47,7 @@ public class TfsCheckupIndicatorServiceImpl implements ITfsCheckupIndicatorServi
 
     /**
      * 新增检测指标管理
-     * 
+     *
      * @param tfsCheckupIndicator 检测指标管理
      * @return 结果
      */
@@ -57,19 +59,20 @@ public class TfsCheckupIndicatorServiceImpl implements ITfsCheckupIndicatorServi
 
     /**
      * 修改检测指标管理
-     * 
+     *
      * @param tfsCheckupIndicator 检测指标管理
      * @return 结果
      */
     @Override
     public int updateTfsCheckupIndicator(TfsCheckupIndicator tfsCheckupIndicator)
     {
+        tfsCheckupIndicator.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         return tfsCheckupIndicatorMapper.updateTfsCheckupIndicator(tfsCheckupIndicator);
     }
 
     /**
      * 批量删除检测指标管理
-     * 
+     *
      * @param ids 需要删除的检测指标管理主键
      * @return 结果
      */
@@ -81,7 +84,7 @@ public class TfsCheckupIndicatorServiceImpl implements ITfsCheckupIndicatorServi
 
     /**
      * 删除检测指标管理信息
-     * 
+     *
      * @param id 检测指标管理主键
      * @return 结果
      */

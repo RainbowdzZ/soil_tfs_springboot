@@ -17,9 +17,9 @@ import java.util.List;
 
 /**
  * 检测指标管理Controller
- * 
- * @author riki
- * @date 2023-11-09
+ *
+ * @author ruoyi
+ * @date 2023-11-23
  */
 @RestController
 @RequestMapping("/tfs/indicator")
@@ -39,7 +39,6 @@ public class TfsCheckupIndicatorController extends BaseController
         List<TfsCheckupIndicator> list = tfsCheckupIndicatorService.selectTfsCheckupIndicatorList(tfsCheckupIndicator);
         return getDataTable(list);
     }
-
     /**
      * 查询检测指标管理列表
      */
@@ -103,7 +102,7 @@ public class TfsCheckupIndicatorController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('tfs:indicator:remove')")
     @Log(title = "检测指标管理", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
+    @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
     {
         return toAjax(tfsCheckupIndicatorService.deleteTfsCheckupIndicatorByIds(ids));

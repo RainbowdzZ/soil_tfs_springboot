@@ -1,78 +1,116 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.wx.mapper.TfsCheckupIndicatorMapper">
-    
-    <resultMap type="TfsCheckupIndicator" id="TfsCheckupIndicatorResult">
-        <result property="id"    column="id"    />
-        <result property="indicatorName"    column="indicator_name"    />
-        <result property="unit"    column="unit"    />
-        <result property="createdAt"    column="created_at"    />
-        <result property="updatedAt"    column="updated_at"    />
-        <result property="status"    column="status"    />
-    </resultMap>
+    <!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <mapper namespace="com.ruoyi.wx.mapper.TfsCheckupIndicatorMapper">
 
-    <sql id="selectTfsCheckupIndicatorVo">
-        select id, indicator_name, unit, created_at, updated_at, status from tfs_checkup_indicator
-    </sql>
+        <resultMap type="TfsCheckupIndicator" id="TfsCheckupIndicatorResult">
+            <result property="id"    column="id"    />
+            <result property="indicatorName"    column="indicator_name"    />
+            <result property="unit"    column="unit"    />
+            <result property="createdAt"    column="created_at"    />
+            <result property="updatedAt"    column="updated_at"    />
+            <result property="status"    column="status"    />
+            <result property="level1Min"    column="level_1_min"    />
+            <result property="level1Max"    column="level_1_max"    />
+            <result property="level2Min"    column="level_2_min"    />
+            <result property="level2Max"    column="level_2_max"    />
+            <result property="level3Min"    column="level_3_min"    />
+            <result property="level3Max"    column="level_3_max"    />
+            <result property="level4Min"    column="level_4_min"    />
+            <result property="level4Max"    column="level_4_max"    />
+            <result property="level5Min"    column="level_5_min"    />
+            <result property="level5Max"    column="level_5_max"    />
+        </resultMap>
 
-    <select id="selectTfsCheckupIndicatorList" parameterType="TfsCheckupIndicator" resultMap="TfsCheckupIndicatorResult">
-        <include refid="selectTfsCheckupIndicatorVo"/>
-        <where>  
-            <if test="indicatorName != null  and indicatorName != ''"> and indicator_name like concat('%', #{indicatorName}, '%')</if>
-            <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
-            <if test="createdAt != null "> and created_at = #{createdAt}</if>
-            <if test="updatedAt != null "> and updated_at = #{updatedAt}</if>
-            <if test="status != null  and status != ''"> and status = #{status}</if>
-        </where>
-    </select>
-    
-    <select id="selectTfsCheckupIndicatorById" parameterType="Long" resultMap="TfsCheckupIndicatorResult">
-        <include refid="selectTfsCheckupIndicatorVo"/>
-        where id = #{id}
-    </select>
-        
-    <insert id="insertTfsCheckupIndicator" parameterType="TfsCheckupIndicator">
-        insert into tfs_checkup_indicator
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">id,</if>
-            <if test="indicatorName != null and indicatorName != ''">indicator_name,</if>
-            <if test="unit != null and unit != ''">unit,</if>
-            <if test="createdAt != null">created_at,</if>
-            <if test="updatedAt != null">updated_at,</if>
-            <if test="status != null">status,</if>
-         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">#{id},</if>
-            <if test="indicatorName != null and indicatorName != ''">#{indicatorName},</if>
-            <if test="unit != null and unit != ''">#{unit},</if>
-            <if test="createdAt != null">#{createdAt},</if>
-            <if test="updatedAt != null">#{updatedAt},</if>
-            <if test="status != null">#{status},</if>
-         </trim>
-    </insert>
+        <sql id="selectTfsCheckupIndicatorVo">
+            select id, indicator_name, unit, created_at, updated_at, status, level_1_min, level_1_max, level_2_min, level_2_max, level_3_min, level_3_max, level_4_min, level_4_max, level_5_min, level_5_max from tfs_checkup_indicator
+        </sql>
 
-    <update id="updateTfsCheckupIndicator" parameterType="TfsCheckupIndicator">
-        update tfs_checkup_indicator
-        <trim prefix="SET" suffixOverrides=",">
-            <if test="indicatorName != null and indicatorName != ''">indicator_name = #{indicatorName},</if>
-            <if test="unit != null and unit != ''">unit = #{unit},</if>
-            <if test="createdAt != null">created_at = #{createdAt},</if>
-            <if test="updatedAt != null">updated_at = #{updatedAt},</if>
-            <if test="status != null">status = #{status},</if>
-        </trim>
-        where id = #{id}
-    </update>
+        <select id="selectTfsCheckupIndicatorList" parameterType="TfsCheckupIndicator" resultMap="TfsCheckupIndicatorResult">
+            <include refid="selectTfsCheckupIndicatorVo"/>
+            <where>
+                <if test="indicatorName != null  and indicatorName != ''"> and indicator_name like concat('%', #{indicatorName}, '%')</if>
+                <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
+                <if test="createdAt != null "> and created_at = #{createdAt}</if>
+                <if test="updatedAt != null "> and updated_at = #{updatedAt}</if>
+                <if test="status != null  and status != ''"> and status = #{status}</if>
+            </where>
+        </select>
 
-    <delete id="deleteTfsCheckupIndicatorById" parameterType="Long">
-        delete from tfs_checkup_indicator where id = #{id}
-    </delete>
+        <select id="selectTfsCheckupIndicatorById" parameterType="Long" resultMap="TfsCheckupIndicatorResult">
+            <include refid="selectTfsCheckupIndicatorVo"/>
+            where id = #{id}
+        </select>
 
-    <delete id="deleteTfsCheckupIndicatorByIds" parameterType="String">
-        delete from tfs_checkup_indicator where id in 
-        <foreach item="id" collection="array" open="(" separator="," close=")">
-            #{id}
-        </foreach>
-    </delete>
-</mapper>
+        <insert id="insertTfsCheckupIndicator" parameterType="TfsCheckupIndicator" useGeneratedKeys="true" keyProperty="id">
+            insert into tfs_checkup_indicator
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="indicatorName != null and indicatorName != ''">indicator_name,</if>
+                <if test="unit != null and unit != ''">unit,</if>
+                <if test="createdAt != null">created_at,</if>
+                <if test="updatedAt != null">updated_at,</if>
+                <if test="status != null">status,</if>
+                <if test="level1Min != null">level_1_min,</if>
+                <if test="level1Max != null">level_1_max,</if>
+                <if test="level2Min != null">level_2_min,</if>
+                <if test="level2Max != null">level_2_max,</if>
+                <if test="level3Min != null">level_3_min,</if>
+                <if test="level3Max != null">level_3_max,</if>
+                <if test="level4Min != null">level_4_min,</if>
+                <if test="level4Max != null">level_4_max,</if>
+                <if test="level5Min != null">level_5_min,</if>
+                <if test="level5Max != null">level_5_max,</if>
+            </trim>
+            <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="indicatorName != null and indicatorName != ''">#{indicatorName},</if>
+                <if test="unit != null and unit != ''">#{unit},</if>
+                <if test="createdAt != null">#{createdAt},</if>
+                <if test="updatedAt != null">#{updatedAt},</if>
+                <if test="status != null">#{status},</if>
+                <if test="level1Min != null">#{level1Min},</if>
+                <if test="level1Max != null">#{level1Max},</if>
+                <if test="level2Min != null">#{level2Min},</if>
+                <if test="level2Max != null">#{level2Max},</if>
+                <if test="level3Min != null">#{level3Min},</if>
+                <if test="level3Max != null">#{level3Max},</if>
+                <if test="level4Min != null">#{level4Min},</if>
+                <if test="level4Max != null">#{level4Max},</if>
+                <if test="level5Min != null">#{level5Min},</if>
+                <if test="level5Max != null">#{level5Max},</if>
+            </trim>
+        </insert>
+
+        <update id="updateTfsCheckupIndicator" parameterType="TfsCheckupIndicator">
+            update tfs_checkup_indicator
+            <trim prefix="SET" suffixOverrides=",">
+                <if test="indicatorName != null and indicatorName != ''">indicator_name = #{indicatorName},</if>
+                <if test="unit != null and unit != ''">unit = #{unit},</if>
+                <if test="createdAt != null">created_at = #{createdAt},</if>
+                <if test="updatedAt != null">updated_at = #{updatedAt},</if>
+                <if test="status != null">status = #{status},</if>
+                <if test="level1Min != null">level_1_min = #{level1Min},</if>
+                <if test="level1Max != null">level_1_max = #{level1Max},</if>
+                <if test="level2Min != null">level_2_min = #{level2Min},</if>
+                <if test="level2Max != null">level_2_max = #{level2Max},</if>
+                <if test="level3Min != null">level_3_min = #{level3Min},</if>
+                <if test="level3Max != null">level_3_max = #{level3Max},</if>
+                <if test="level4Min != null">level_4_min = #{level4Min},</if>
+                <if test="level4Max != null">level_4_max = #{level4Max},</if>
+                <if test="level5Min != null">level_5_min = #{level5Min},</if>
+                <if test="level5Max != null">level_5_max = #{level5Max},</if>
+            </trim>
+            where id = #{id}
+        </update>
+
+        <delete id="deleteTfsCheckupIndicatorById" parameterType="Long">
+            delete from tfs_checkup_indicator where id = #{id}
+        </delete>
+
+        <delete id="deleteTfsCheckupIndicatorByIds" parameterType="String">
+            delete from tfs_checkup_indicator where id in
+            <foreach item="id" collection="array" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </delete>
+    </mapper>

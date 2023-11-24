@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.wx.mapper.WxUserMapper">
-    
+
     <resultMap type="WxUser" id="WxUserResult">
         <result property="id"    column="id"    />
         <result property="openid"    column="openid"    />
@@ -24,7 +24,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectWxUserList" parameterType="WxUser" resultMap="WxUserResult">
         <include refid="selectWxUserVo"/>
-        <where>  
+        <where>
+
+
             <if test="openid != null  and openid != ''"> and openid = #{openid}</if>
             <if test="nickname != null  and nickname != ''"> and nickname like concat('%', #{nickname}, '%')</if>
             <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
@@ -33,7 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="isDelete != null  and isDelete != ''"> and is_delete = #{isDelete}</if>
         </where>
     </select>
-    
+
     <select id="selectWxUserById" parameterType="Long" resultMap="WxUserResult">
         <include refid="selectWxUserVo"/>
         where id = #{id}

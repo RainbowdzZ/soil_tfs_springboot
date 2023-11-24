@@ -12,6 +12,7 @@
         <result property="unit"    column="unit"    />
         <result property="checkupValue"    column="checkup_value"    />
         <result property="submissionTime"    column="submission_time"    />
+        <result property="level" column="level" />
     </resultMap>
 
     <sql id="selectTfsCheckupVo">
@@ -33,6 +34,7 @@
             <if test="unit != null and unit != ''">unit,</if>
             <if test="checkupValue != null">checkup_value,</if>
             <if test="submissionTime == null">submission_time,</if>
+            <if test="level != null">level,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
@@ -42,6 +44,7 @@
             <if test="unit != null and unit != ''">#{unit},</if>
             <if test="checkupValue != null">#{checkupValue},</if>
             <if test="submissionTime == null">now(),</if>
+            <if test="level != null">#{level},</if>
         </trim>
     </insert>
 

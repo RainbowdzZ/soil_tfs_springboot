@@ -1,19 +1,20 @@
 package com.ruoyi.wx.service;
 
-import java.util.List;
 import com.ruoyi.wx.domain.entity.TfsCheckupIndicator;
+
+import java.util.List;
 
 /**
  * 检测指标管理Service接口
- * 
- * @author riki
- * @date 2023-11-09
+ *
+ * @author ruoyi
+ * @date 2023-11-23
  */
-public interface ITfsCheckupIndicatorService 
+public interface ITfsCheckupIndicatorService
 {
     /**
      * 查询检测指标管理
-     * 
+     *
      * @param id 检测指标管理主键
      * @return 检测指标管理
      */
@@ -21,7 +22,7 @@ public interface ITfsCheckupIndicatorService
 
     /**
      * 查询检测指标管理列表
-     * 
+     *
      * @param tfsCheckupIndicator 检测指标管理
      * @return 检测指标管理集合
      */
@@ -29,7 +30,7 @@ public interface ITfsCheckupIndicatorService
 
     /**
      * 新增检测指标管理
-     * 
+     *
      * @param tfsCheckupIndicator 检测指标管理
      * @return 结果
      */
@@ -37,7 +38,7 @@ public interface ITfsCheckupIndicatorService
 
     /**
      * 修改检测指标管理
-     * 
+     *
      * @param tfsCheckupIndicator 检测指标管理
      * @return 结果
      */
@@ -45,7 +46,7 @@ public interface ITfsCheckupIndicatorService
 
     /**
      * 批量删除检测指标管理
-     * 
+     *
      * @param ids 需要删除的检测指标管理主键集合
      * @return 结果
      */
@@ -53,7 +54,7 @@ public interface ITfsCheckupIndicatorService
 
     /**
      * 删除检测指标管理信息
-     * 
+     *
      * @param id 检测指标管理主键
      * @return 结果
      */
