@@ -307,6 +307,12 @@ public class TfsOrderServiceImpl extends ServiceImpl<TfsOrderMapper, TfsOrder> i
             wxOrderVo.setShippingType(tfsOrder.getShippingType());
 
             WxUserFarm farm = wxUserFarmService.selectWxUserFarmById(tfsOrder.getFarmId());
+            wxOrderVo.setProvinceName(farm.getProvinceName());
+            wxOrderVo.setCityName(farm.getCityName());
+            wxOrderVo.setDistrictName(farm.getDistrictName());
+            wxOrderVo.setDetail(farm.getDetail());
+            wxOrderVo.setConsignee(farm.getConsignee());
+            wxOrderVo.setPhone(farm.getPhone());
             wxOrderVo.setPlantCategory(farm.getPlantCategory());
             wxOrderVo.setScale(farm.getScale());
             wxOrderVo.setAddress(farm.getProvinceName()+farm.getCityName()+farm.getDistrictName()+farm.getDetail());
