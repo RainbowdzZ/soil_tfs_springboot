@@ -46,6 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="soilNumber != null"> and soil_number = #{soilNumber}</if>
             <if test="orderTime != null"> and DATE(order_time) = #{orderTime}</if>
             <if test="orderStatus == null"> and order_status IN ('3', '4')</if>
+            <if test="orderStatus != null  and orderStatus != ''"> and order_status = #{orderStatus}</if>
             <if test="address != null"> and address = #{address}</if>
             <if test="soilUrl != null"> and soil_url = #{soilUrl}</if>
         </where>

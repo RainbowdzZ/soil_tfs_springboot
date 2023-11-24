@@ -16,7 +16,7 @@
     </resultMap>
 
     <sql id="selectTfsCheckupVo">
-        select id, order_id, submission_time, checkup_indicator_id,checkup_indicator_name,unit,checkup_value from tfs_checkup
+        select id, order_id, submission_time, checkup_indicator_id,checkup_indicator_name,unit,checkup_value,level from tfs_checkup
     </sql>
     <!--    引入查询订单的vo-->
     <sql id="selectTfsOrderVo">

@@ -29,17 +29,6 @@ public class TfsRecipeController extends BaseController
     @Autowired
     private ITfsRecipeService tfsRecipeService;
 
-//    /**
-//     * 查询专家配方列表
-//     */
-//    @PreAuthorize("@ss.hasPermi('tfs:recipe:list')")
-//    @GetMapping("/list")
-//    public TableDataInfo list(TfsRecipe tfsRecipe)
-//    {
-//        startPage();
-//        List<TfsRecipe> list = tfsRecipeService.selectTfsRecipeList(tfsRecipe);
-//        return getDataTable(list);
-//    }
     /**
      * 查询待配方订单列表
      */

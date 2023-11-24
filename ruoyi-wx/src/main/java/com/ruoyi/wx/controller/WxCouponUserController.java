@@ -22,7 +22,7 @@ public class WxCouponUserController extends BaseController {
     /**
      * 查询可以发放的优惠券列表
      */
-    @GetMapping("/IssuesCoupons/list")
+    @GetMapping("/userCoupons/list")
     public TableDataInfo IssuesCouponsList(){
         List<IssuingCouponsVO> coupons = wxUserCouponService.queryIssuingCoupons();
         return getDataTable(coupons);
