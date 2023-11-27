@@ -93,4 +93,11 @@ public interface ITfsOrderService  extends IService<TfsOrder>
      * @param tfsOrder
      */
     void checkOrderExpiration(TfsOrder tfsOrder);
+
+    /**
+     * 对象拷贝，给订单列表查询增加字段
+     * @param list
+     * @return
+     */
+    List<TfsOrderDto> mapTfsOrdersToDtoList(List<TfsOrder> list);
 }

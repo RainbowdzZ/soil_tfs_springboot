@@ -50,7 +50,7 @@ public class TfsOrderServiceImpl extends ServiceImpl<TfsOrderMapper, TfsOrder> i
     private IWxUserFarmService wxUserFarmService;
 
     //生成土壤号
-// 生成土壤号
+    // 生成土壤号
     private Long generateSoilNumber(int countToday) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         String date = dateFormat.format(new Date());
@@ -64,6 +64,28 @@ public class TfsOrderServiceImpl extends ServiceImpl<TfsOrderMapper, TfsOrder> i
             return 0L; // 或者根据需要返回适当的默认值
         }
     }
+
+    /**
+     * 对象拷贝，给订单列表查询增加农场表的联系人和联系电话字段
+     * @param tfsOrders
+     * @return
+     */
+    public List<TfsOrderDto> mapTfsOrdersToDtoList(List<TfsOrder> tfsOrders) {
+        return tfsOrders.stream().map(item -> {
+            TfsOrderDto tfsOrderDto = new TfsOrderDto();
+            BeanUtils.copyProperties(item, tfsOrderDto);
+            Long farmId = item.getFarmId();
+            WxUserFarm wxUserFarm = wxUserFarmService.selectWxUserFarmById(farmId);
+            if (wxUserFarm != null) {
+                String userName = wxUserFarm.getConsignee();
+                String phone = wxUserFarm.getPhone();
+                tfsOrderDto.setConsignee(userName);
+                tfsOrderDto.setPhone(phone);
+            }
+            return tfsOrderDto;
+        }).collect(Collectors.toList());
+    }
+
 
     /**
      * 定时任务
@@ -144,36 +166,6 @@ public class TfsOrderServiceImpl extends ServiceImpl<TfsOrderMapper, TfsOrder> i
         }
 
         return tfsOrders;
-    }
-
-    /**
-     * 查询订单管理列表（增加联系人、联系电话字段）
-     * @param tfsOrder
-     * @return
-     */
-    @Override
-    public List<TfsOrderDto> selectTfsOrderDtoList(TfsOrder tfsOrder)
-    {
-
-        List<TfsOrder> tfsOrders = tfsOrderMapper.selectTfsOrderList(tfsOrder);
-        for (TfsOrder order : tfsOrders) {
-            checkOrderExpiration(order);
-        }
-        List<TfsOrderDto> tfsOrderDtosList=tfsOrders.stream().map(item->{
-            TfsOrderDto tfsOrderDto = new TfsOrderDto();
-            BeanUtils.copyProperties(item,tfsOrderDto);
-            Long farmId=item.getFarmId();
-            WxUserFarm wxUserFarm=wxUserFarmService.selectWxUserFarmById(farmId);
-            if(wxUserFarm!=null){
-                String userName=wxUserFarm.getConsignee();
-                String phone= wxUserFarm.getPhone();
-                tfsOrderDto.setConsignee(userName);
-                tfsOrderDto.setPhone(phone);
-            }
-            return tfsOrderDto;
-        }).collect(Collectors.toList());
-
-        return tfsOrderDtosList;
     }
 
 

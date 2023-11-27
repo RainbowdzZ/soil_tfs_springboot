@@ -49,19 +49,8 @@ public class TfsOrderController extends BaseController
         startPage();
         tfsOrder.setIsDelete(IsDeleteConstant.NO.getCode());
         List<TfsOrder> list = tfsOrderService.selectTfsOrderList(tfsOrder);
-        List<TfsOrderDto> tfsOrderDtosList=list.stream().map(item->{
-            TfsOrderDto tfsOrderDto = new TfsOrderDto();
-            BeanUtils.copyProperties(item,tfsOrderDto);
-            Long farmId=item.getFarmId();
-            WxUserFarm wxUserFarm=wxUserFarmService.selectWxUserFarmById(farmId);
-            if(wxUserFarm!=null){
-                String userName=wxUserFarm.getConsignee();
-                String phone= wxUserFarm.getPhone();
-                tfsOrderDto.setConsignee(userName);
-                tfsOrderDto.setPhone(phone);
-            }
-            return tfsOrderDto;
-        }).collect(Collectors.toList());
+        //对象拷贝，添加农场表的联系人、联系电话字段
+        List<TfsOrderDto> tfsOrderDtosList = tfsOrderService.mapTfsOrdersToDtoList(list);
         TableDataInfo tableDataInfo = getDataTable(list);
         tableDataInfo.setRows(tfsOrderDtosList);
         return tableDataInfo;
