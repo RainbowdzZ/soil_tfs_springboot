@@ -81,12 +81,6 @@ public interface ITfsOrderService  extends IService<TfsOrder>
      */
     List<WxOrderVo> selectOrderByUserId(Long wxUserId);
 
-    /**
-     * 订单列表增加联系人，联系电话查询
-     * @param tfsOrder
-     * @return
-     */
-    List<TfsOrderDto> selectTfsOrderDtoList(TfsOrder tfsOrder);
 
     /**
      * 检测订单是否过期
